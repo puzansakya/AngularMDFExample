@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,18 +13,32 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
 
-  userForm
+  userForm: FormGroup;
+
+  constructor(private _formBuilder: FormBuilder) {
+
+  }
 
   ngOnInit(): void {
-    this.userForm = new FormGroup({
-      name: new FormControl("puzan", [Validators.required,Validators.minLength(4),Validators.maxLength(15)]),
-      email: new FormControl(),
-      address: new FormGroup({
-        street: new FormControl(),
-        city: new FormControl(),
-        postalCode: new FormControl(null,Validators.pattern('^[1-9][0-9]{4}$'))
+    this.userForm = this._formBuilder.group({
+      name: ['puzan', [Validators.required, Validators.minLength(4), Validators.maxLength(15)]],
+      email: [],
+      address: this._formBuilder.group({
+        street: [],
+        city: [],
+        postalCode: [null,Validators.pattern('^[1-9][0-9]{4}$')]
       })
     });
+
+    // this.userForm = new FormGroup({
+    //   name: new FormControl("puzan", [Validators.required,Validators.minLength(4),Validators.maxLength(15)]),
+    //   email: new FormControl(),
+    //   address: new FormGroup({
+    //     street: new FormControl(),
+    //     city: new FormControl(),
+    //     postalCode: new FormControl(null,Validators.pattern('^[1-9][0-9]{4}$'))
+    //   })
+    // });
   }
 
   onSubmit() {
